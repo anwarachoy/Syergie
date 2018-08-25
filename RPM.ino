@@ -17,5 +17,5 @@ void loop()
   rpm_2 = speed_2.calcRPM();
   Serial.print(rpm_1);
   Serial.print(" -\t- ");
-  Serial.println(rpm_1);
+  Serial.println(rpm_2);
 }
