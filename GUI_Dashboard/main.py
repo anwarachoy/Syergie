@@ -213,11 +213,16 @@ class MQTTValue(QObject):
 		counter=counter+1
 		if (counter >= pubdelay):
 			client.publish("MainControl", "active")#publish
-			if (ind1): ind1 = 0 else: indicator1 = 0
-			if (ind2): ind2 = 0 else: indicator2 = 0
-			if (ind3): ind3 = 0 else: indicator3 = 0
-			if (ind4): ind4 = 0 else: indicator4 = 0
-			if (windInd): windInd = 0 else: indicator5 = 0
+			if (ind1): ind1 = 0 
+			else: indicator1 = 0
+			if (ind2): ind2 = 0 
+			else: indicator2 = 0
+			if (ind3): ind3 = 0
+			else: indicator3 = 0
+			if (ind4): ind4 = 0 
+			else: indicator4 = 0
+			if (windInd): windInd = 0
+			else: indicator5 = 0
 			counter = 0;
 		return ""
 	
