@@ -16,7 +16,6 @@ unsigned long prevmillis = 0; // To store time
 
 double rpm;
 
-double m_speed = 0;
 double set_speed = 100;
 
 double kp = 0.00007936;
@@ -90,6 +89,7 @@ ISR(TIMER1_COMPA_vect){          // timer compare interrupt service routine
     double DTerm;
     double PIDTerm;
     
+    static double m_speed = 0;
     static double e_speed_pre = 0; // posisi lama
     static double e_speed_buff = 0; // posisi baru
     static double e_speed = 0; // perbedaan feedback dengan input
