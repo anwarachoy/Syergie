@@ -14,6 +14,7 @@ unsigned long prevmillis = 0; // To store time
 
 double rpm;
 
+double m_speed = 0;
 double set_speed = 100;
 
 double kp = 0.00007936;
@@ -84,7 +85,6 @@ ISR(TIMER1_COMPA_vect){          // timer compare interrupt service routine
     double DTerm;
     double PIDTerm;
     
-    static double m_speed = 0;
     static double e_speed_pre = 0; // posisi lama
     static double e_speed_buff = 0; // posisi baru
     static double e_speed = 0; // perbedaan feedback dengan input
@@ -116,6 +116,7 @@ ISR(TIMER1_COMPA_vect){          // timer compare interrupt service routine
         pwm_pulse = PIDTerm; // Hasil PID dijadikan data kecepatan
       
         e_speed_pre = m_speed; // untuk mencari derivatif
+        Serial.print("start\t");
     }else{
         m_speed = 0;
         e_speed = 0;
@@ -123,6 +124,7 @@ ISR(TIMER1_COMPA_vect){          // timer compare interrupt service routine
         e_speed_buff = 0;
         e_speed_sum = 0;
         pwm_pulse = 0;
+        Serial.print("stop\t");
     }
 
     // Jika m_direction true, motor berputar searah jarum jam
@@ -130,10 +132,12 @@ ISR(TIMER1_COMPA_vect){          // timer compare interrupt service routine
       // putar clockwise
       analogWrite(RPWM, pwm_pulse);
       analogWrite(LPWM, 0);
+      Serial.print("right\t");
     }else{
       // putar counterclockwise
       analogWrite(RPWM, 0);
       analogWrite(LPWM, pwm_pulse);
+      Serial.print("left\t");
     }
       
     Serial.print(m_speed);
