@@ -41,16 +41,18 @@ void setup() {
     
     // TIMER 1 for interrupt frequency 100 Hz:
     cli(); // stop interrupts
-    TCCR1A = 0; // set entire TCCR1A register to 0
-    TCCR1B = 0; // same for TCCR1B
-    TCNT1  = 0; // initialize counter value to 0
-    // set compare match register for 100 Hz increments
-    OCR1A = 19999; // = 16000000 / (8 * 100) - 1 (must be <65536)
-    // turn on CTC mode
+    // Clear registers
+    TCCR1A = 0;
+    TCCR1B = 0;
+    TCNT1 = 0;
+  
+    // 100 Hz (16000000/((624+1)*256))
+    OCR1A = 624;
+    // CTC
     TCCR1B |= (1 << WGM12);
-    // Set CS12, CS11 and CS10 bits for 8 prescaler
-    TCCR1B |= (0 << CS12) | (1 << CS11) | (0 << CS10);
-    // enable timer compare interrupt
+    // Prescaler 256
+    TCCR1B |= (1 << CS12);
+    // Output Compare Match A Interrupt Enable
     TIMSK1 |= (1 << OCIE1A);
     sei(); // allow interrupts
 }
