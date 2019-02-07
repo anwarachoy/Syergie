@@ -22,15 +22,12 @@ double kd = 0;
 
 void setup() {
     // put your setup code here, to run once:
+    pinMode(RPWM,OUTPUT);
+    pinMode(LPWM,OUTPUT);
+
+    digitalWrite(RPWM,LOW);
+    digitalWrite(LPWM,LOW);
     
-    pinMode(switchon,INPUT_PULLUP);
-    pinMode(switchturn,INPUT_PULLUP);
-    for(int i=5;i<9;i++){
-        pinMode(i,OUTPUT);
-    }
-    for(int i=5;i<9;i++){
-        digitalWrite(i,LOW);
-    }
     delay(1000);
     
     Serial.begin(115200);
