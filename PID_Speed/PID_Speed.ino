@@ -1,11 +1,9 @@
 #define interruptPin  2
-#define switchon 4
-#define switchturn 3
 #define RPWM 9
 #define LPWM 10
 
 String mySt = "";
-char myChar;
+
 boolean stringComplete = false;  // whether the string is complete
 boolean motor_start = false;
 boolean m_direction = true;
