@@ -1,16 +1,14 @@
 #define interruptPin  2
 #define switchon 4
 #define switchturn 3
-#define L_EN 8
-#define R_EN 7
-#define RPWM 6
-#define LPWM 5
+#define RPWM 9
+#define LPWM 10
 
 String mySt = "";
 char myChar;
 boolean stringComplete = false;  // whether the string is complete
 boolean motor_start = false;
-boolean m_direction = false;
+boolean m_direction = true;
 
 const int tickmark = 1;
 const int rpm_max = 2500;
@@ -63,15 +61,26 @@ void setup() {
 }
 
 void loop() {
-    // put your main code here, to run repeatedly:
-    motor_start = digitalRead(switchon);
-    m_direction = digitalRead(switchturn);
-    if(motor_start){
-      digitalWrite(R_EN,HIGH);
-      digitalWrite(L_EN,HIGH);
-    }else{
-      digitalWrite(R_EN,LOW);
-      digitalWrite(L_EN,LOW);
+    if (stringComplete) {
+      if (mySt.substring(0,5) == "speed"){
+        set_speed = mySt.substring(5,mySt.length()).toInt();  //get string after set_speed
+      }
+      else if (mySt.substring(0,5) == "start"){
+        motor_start = true;
+      }
+      else if (mySt.substring(0,4) == "stop"){
+        motor_start = false;
+      }
+      else if (mySt.substring(0,10) == "turn_right"){
+        m_direction =  true;
+      }
+      else if (mySt.substring(0,9) == "turn_left"){
+        m_direction =  false;
+      }
+      
+      // clear the string when COM receiving is completed
+      mySt = "";  //note: in code below, mySt will not become blank, mySt is blank until '\n' is received
+      stringComplete = false;
     }
 }
 
@@ -124,12 +133,12 @@ ISR(TIMER1_COMPA_vect){          // timer compare interrupt service routine
     // Jika m_direction true, motor berputar searah jarum jam
     if (m_direction){
       // putar clockwise
-      analogWrite(RPWM, 0);
-      analogWrite(LPWM, pwm_pulse);
-    }else{
-      // putar counterclockwise
       analogWrite(RPWM, pwm_pulse);
       analogWrite(LPWM, 0);
+    }else{
+      // putar counterclockwise
+      analogWrite(RPWM, 0);
+      analogWrite(LPWM, pwm_pulse);
     }
       
     Serial.print(m_speed);
